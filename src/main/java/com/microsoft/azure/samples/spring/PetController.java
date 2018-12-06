@@ -12,12 +12,32 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
+
 
 @Controller
 @RequestMapping(path="/pets")
 public class PetController {
     @Autowired
     private PetRepository petRepository;
+
+
+    /**
+     * A method to populate database with TWO initial records
+     */
+    @PostConstruct
+    public void init(){
+        Pet pet1 = new Pet();
+        pet1.setName("Tom");
+        pet1.setSpecies("cat");
+
+        Pet pet2 = new Pet();
+        pet2.setName("Jerry");
+        pet2.setSpecies("mouse");
+
+        petRepository.save(pet2);
+        petRepository.save(pet1);
+    }
 
     @PostMapping
     public @ResponseBody String createPet(@RequestBody Pet pet) {
